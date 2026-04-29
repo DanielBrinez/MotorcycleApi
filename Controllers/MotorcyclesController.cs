@@ -10,11 +10,12 @@ namespace MotorcycleApi.Controllers
     public class MotorcyclesController : ControllerBase
     {
         private readonly IMotorcycleService _services;
-
-        public MotorcyclesController(IMotorcycleService service)
+        
+        public MotorcyclesController (IMotorcycleService service)
         {
             _services = service;
         }
+        
 
     [HttpGet]
 
@@ -22,36 +23,33 @@ namespace MotorcycleApi.Controllers
         {
             return Ok(_services.GetAll());
         }
-
     [HttpGet("{Id}")]
 
     public IActionResult GetById(int Id)
         {
-            var tempId = _services.GetById(Id);
-
-            if(tempId == null)
+            var findiD = _services.GetById(Id);
+            if(findiD == null)
             {
                 return NotFound("Producto no encontrado");
             }
             else
             {
-                return Ok(tempId);
+                return Ok(findiD);
             }
         }
-    
     [HttpPost]
 
-    public IActionResult GetPost(int Id, Motorcycle postMotorcycle)
+    public IActionResult PostId(Motorcycle receivedMotorcycle)
         {
-            var tempPost = _services.GetPost(Id, postMotorcycle);
-            return Created($"/api/motorcycles{postMotorcycle.Id}", postMotorcycle);
+            var postTemp = _services.PostId(receivedMotorcycle);
+            return Created($"/api/motorcycles{receivedMotorcycle.Id}", receivedMotorcycle);
         }
 
     [HttpPut("{Id}")]
 
-    public IActionResult GetPut(int Id, Motorcycle postMotorcycle)
+    public IActionResult PutId (int Id, Motorcycle updatedMotorcycle)
         {
-            var tempPut = _services.GetPut(Id, postMotorcycle);
+            var tempPut = _services.PutId(Id, updatedMotorcycle);
 
             if(tempPut == null)
             {
@@ -62,12 +60,12 @@ namespace MotorcycleApi.Controllers
                 return Ok(tempPut);
             }
         }
-    
     [HttpDelete("{Id}")]
 
     public IActionResult GetDelete (int Id)
         {
             var tempDelete = _services.GetDelete(Id);
+
             if(tempDelete == null)
             {
                 return NotFound("Producto no encontrado para eliminar");

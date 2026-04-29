@@ -5,7 +5,6 @@ using System.Collections.Generic;
 namespace MotorcycleApi.Models
 
 {
-    
 public class Motorcycle
 
 {
