@@ -6,56 +6,79 @@ namespace MotorcycleApi.Services
     public class MotorcycleService : IMotorcycleService
     {
         private readonly MotorcycleContext _context;
-
-    public MotorcycleService (MotorcycleContext context)
+        
+        public MotorcycleService (MotorcycleContext context)
         {
             _context = context;
         }
 
+    public List<Motorcycle> SelectOrders()
+        {
+            var selectProducts = _context.Motorcycles.Select(s => new { s.Name, s.Price });
+            return(selectProducts);
+        }
+
+
+    public List<Motorcycle> GetOrder()
+        {
+            var allOrders = _context.Motorcycles.OrderBy(a => a.Price).ToList();
+            return(allOrders);
+        }
+    public List<Motorcycle> GetAllPrice()
+        {
+            var findProduct = _context.Motorcycles.Where(f => f.Price <= 50000000).ToList();
+            return(findProduct);
+        }
+
+
     public List<Motorcycle> GetAll()
         {
-            return _context.Motorcycles.ToList();
+            return (_context.Motorcycles.ToList());
         }
 
     public Motorcycle? GetById(int Id)
         {
-            return _context.Motorcycles.FirstOrDefault(t => t.Id == Id);
+            return _context.Motorcycles.FirstOrDefault(f => f.Id == Id);
         }
-    public Motorcycle? PostId(Motorcycle receivedMotorcycle)
+
+    public Motorcycle? GetPost (Motorcycle createdMotorcycle)
         {
-            receivedMotorcycle.Id = _context.Motorcycles.Count() + 1;
-            _context.Motorcycles.Add(receivedMotorcycle);
+            createdMotorcycle.Id = _context.Motorcycles.Count() + 1;
+            _context.Motorcycles.Add(createdMotorcycle);
             _context.SaveChanges();
-            return(receivedMotorcycle);
+            return(createdMotorcycle);
         }
-    public Motorcycle? PutId (int Id, Motorcycle updatedMotorcycle)
+
+    public Motorcycle? GetPut(int Id, Motorcycle createdMotorcycle)
         {
-            var updatePut = _context.Motorcycles.FirstOrDefault(u => u.Id == Id);
-            if(updatePut == null)
+            var tempPut = _context.Motorcycles.FirstOrDefault(f => f.Id == Id);
+            if(tempPut == null)
             {
-                return (null);
+                return(null);
             }
             else
             {
-                updatePut.Name = updatedMotorcycle.Name;
-                updatePut.Stock = updatedMotorcycle.Stock;
-                updatePut.Price = updatedMotorcycle.Price;
+                tempPut.Name = createdMotorcycle.Name;
+                tempPut.Stock = createdMotorcycle.Stock;
+                tempPut.Price = createdMotorcycle.Price;
                 _context.SaveChanges();
-                return(updatePut);
+                return(tempPut);
             }
         }
+    
     public Motorcycle? GetDelete (int Id)
         {
-            var deleteProduct = _context.Motorcycles.FirstOrDefault(d => d.Id == Id);
-            if(deleteProduct == null)
+            var deleteTemp = _context.Motorcycles.FirstOrDefault(f => f.Id == Id);
+            
+            if(deleteTemp == null)
             {
-                return (null);
+                return(null);
             }
             else
             {
-                _context.Motorcycles.Remove(deleteProduct);
+                _context.Motorcycles.Remove(deleteTemp);
                 _context.SaveChanges();
-                return(deleteProduct);
+                return(deleteTemp);
             }
         }
     }

@@ -1,12 +1,11 @@
-using Microsoft.AspNetCore.Mvc;
 using MotorcycleApi.Models;
 using MotorcycleApi.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace MotorcycleApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-
     public class MotorcyclesController : ControllerBase
     {
         private readonly IMotorcycleService _services;
@@ -15,7 +14,30 @@ namespace MotorcycleApi.Controllers
         {
             _services = service;
         }
-        
+
+    [HttpGet("SelectProduct")]
+
+    public IActionResult SelectOrders()
+        {
+            var findOrders = _services.SelectOrders();
+            return(findOrders);
+        }
+
+    [HttpGet("Orders")]
+
+    public IActionResult GetOrder()
+        {
+            var tempOrder= _services.GetOrder();
+            return Ok(tempOrder);
+        }
+
+    [HttpGet("Price")]
+
+    public IActionResult GetAllPrice()
+        {
+            var allPrice = _services.GetAllPrice();
+            return Ok(allPrice);
+        }
 
     [HttpGet]
 
@@ -23,56 +45,57 @@ namespace MotorcycleApi.Controllers
         {
             return Ok(_services.GetAll());
         }
+
     [HttpGet("{Id}")]
 
     public IActionResult GetById(int Id)
         {
-            var findiD = _services.GetById(Id);
-            if(findiD == null)
+            var tempid = _services.GetById(Id);
+            if(tempid == null)
             {
                 return NotFound("Producto no encontrado");
             }
             else
             {
-                return Ok(findiD);
+                return Ok(tempid);
             }
         }
+
     [HttpPost]
 
-    public IActionResult PostId(Motorcycle receivedMotorcycle)
+    public IActionResult GetPost (Motorcycle createdMotorcycle)
         {
-            var postTemp = _services.PostId(receivedMotorcycle);
-            return Created($"/api/motorcycles{receivedMotorcycle.Id}", receivedMotorcycle);
+            var tempPost = _services.GetPost(createdMotorcycle);
+            return Created($"/api/controllers,{createdMotorcycle.Id}", createdMotorcycle);
         }
 
     [HttpPut("{Id}")]
 
-    public IActionResult PutId (int Id, Motorcycle updatedMotorcycle)
+    public IActionResult GetPut(int Id, Motorcycle createdMotorcycle)
         {
-            var tempPut = _services.PutId(Id, updatedMotorcycle);
-
-            if(tempPut == null)
+            var putTemp = _services.GetPut(Id, createdMotorcycle);
+            if(putTemp == null)
             {
                 return NotFound("Producto no encontrado para actualizar");
             }
             else
             {
-                return Ok(tempPut);
+                return Ok(putTemp);
             }
         }
+
     [HttpDelete("{Id}")]
 
     public IActionResult GetDelete (int Id)
         {
             var tempDelete = _services.GetDelete(Id);
-
             if(tempDelete == null)
             {
                 return NotFound("Producto no encontrado para eliminar");
             }
             else
             {
-                return Ok("Producto eliminado");
+                return Ok("producto eliminado");
             }
         }
     }
