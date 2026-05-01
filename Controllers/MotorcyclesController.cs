@@ -19,68 +19,115 @@ namespace MotorcycleApi.Controllers
 
     public IActionResult SelectOrders()
         {
-            var findOrders = _services.SelectOrders();
-            return(findOrders);
+            try
+            {
+               var findOrders = _services.SelectOrders();
+               return Ok(findOrders);   
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(500, "Error interno del servidor");
+            }
         }
 
     [HttpGet("Orders")]
 
     public IActionResult GetOrder()
         {
-            var tempOrder= _services.GetOrder();
-            return Ok(tempOrder);
+            try
+            {
+                var tempOrder= _services.GetOrder();
+                return Ok(tempOrder);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Error interno del servidor");
+            }
         }
 
     [HttpGet("Price")]
 
     public IActionResult GetAllPrice()
         {
-            var allPrice = _services.GetAllPrice();
-            return Ok(allPrice);
+            try
+            {
+                var allPrice = _services.GetAllPrice();
+                return Ok(allPrice);
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(500, "Error interno del servidor");
+            }
+            
         }
 
     [HttpGet]
 
     public IActionResult GetAll()
         {
-            return Ok(_services.GetAll());
+          try
+
+             {
+               return Ok(_services.GetAll());
+             }
+            
+          catch(Exception ex)
+            {
+                return StatusCode(500, "Error interno del servidor");
+            }
+            
         }
 
     [HttpGet("{Id}")]
 
     public IActionResult GetById(int Id)
+       {
+         try
+             {
+              var tempid = _services.GetById(Id);
+              if(tempid == null)
         {
-            var tempid = _services.GetById(Id);
-            if(tempid == null)
-            {
-                return NotFound("Producto no encontrado");
-            }
-            else
-            {
-                return Ok(tempid);
-            }
+            return NotFound("Producto no encontrado");
         }
+        return Ok(tempid);
+    }
+    catch (Exception ex)
+    {
+        return StatusCode(500, "Error interno del servidor");
+    }
+}
 
     [HttpPost]
 
     public IActionResult GetPost (Motorcycle createdMotorcycle)
         {
-            var tempPost = _services.GetPost(createdMotorcycle);
-            return Created($"/api/controllers,{createdMotorcycle.Id}", createdMotorcycle);
+            try
+            {
+                var tempPost = _services.GetPost(createdMotorcycle);
+                return Created($"/api/controllers,{createdMotorcycle.Id}", createdMotorcycle);   
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(500, "Error interno del servidor");
+            }
         }
 
     [HttpPut("{Id}")]
 
     public IActionResult GetPut(int Id, Motorcycle createdMotorcycle)
         {
-            var putTemp = _services.GetPut(Id, createdMotorcycle);
-            if(putTemp == null)
+            try
             {
-                return NotFound("Producto no encontrado para actualizar");
-            }
-            else
-            {
+                var putTemp = _services.GetPut(Id, createdMotorcycle);
+                if(putTemp == null)
+                {
+                    return NotFound("Producto no encontrado para actualizar");
+                }
                 return Ok(putTemp);
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(500, "Error interno del servidor");
             }
         }
 
@@ -88,14 +135,18 @@ namespace MotorcycleApi.Controllers
 
     public IActionResult GetDelete (int Id)
         {
-            var tempDelete = _services.GetDelete(Id);
-            if(tempDelete == null)
+            try
             {
-                return NotFound("Producto no encontrado para eliminar");
+               var tempDelete = _services.GetDelete(Id);
+               if(tempDelete == null)
+                {
+                   return NotFound("Producto no encontrado para eliminar");
+                }
+                return Ok("producto eliminado");   
             }
-            else
+            catch(Exception ex)
             {
-                return Ok("producto eliminado");
+                return StatusCode(500, "Error interno del servidor");
             }
         }
     }
