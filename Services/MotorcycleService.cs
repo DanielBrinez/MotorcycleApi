@@ -12,10 +12,12 @@ namespace MotorcycleApi.Services
             _context = context;
         }
 
-    public List<Motorcycle> SelectOrders()
+    public List<object> SelectOrders()
         {
-            var selectProducts = _context.Motorcycles.Select(s => new { s.Name, s.Price });
-            return(selectProducts);
+            var selectProducts = _context.Motorcycles
+                .Select(s => new { s.Name, s.Price })
+                .ToList<object>();
+                return(selectProducts);
         }
 
 
