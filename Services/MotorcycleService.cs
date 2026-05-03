@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using MotorcycleApi.Models;
 using MotorcycleApi.Data;
 
@@ -6,81 +7,68 @@ namespace MotorcycleApi.Services
     public class MotorcycleService : IMotorcycleService
     {
         private readonly MotorcycleContext _context;
-        
-        public MotorcycleService (MotorcycleContext context)
+
+        public MotorcycleService(MotorcycleContext context)
         {
             _context = context;
         }
-
-    public List<object> SelectOrders()
+    
+    public async Task<List<Motorcycle>> GetAll()
         {
-            var selectProducts = _context.Motorcycles
-                .Select(s => new { s.Name, s.Price })
-                .ToList<object>();
-                return(selectProducts);
+            return await (_context.Motorcycles.ToListAsync());
         }
 
-
-    public List<Motorcycle> GetOrder()
+    public async Task <Motorcycle?> GetById(int Id)
         {
-            var allOrders = _context.Motorcycles.OrderBy(a => a.Price).ToList();
-            return(allOrders);
-        }
-    public List<Motorcycle> GetAllPrice()
-        {
-            var findProduct = _context.Motorcycles.Where(f => f.Price <= 50000000).ToList();
-            return(findProduct);
-        }
-
-
-    public List<Motorcycle> GetAll()
-        {
-            return (_context.Motorcycles.ToList());
-        }
-
-    public Motorcycle? GetById(int Id)
-        {
-            return _context.Motorcycles.FirstOrDefault(f => f.Id == Id);
-        }
-
-    public Motorcycle? GetPost (Motorcycle createdMotorcycle)
-        {
-            createdMotorcycle.Id = _context.Motorcycles.Count() + 1;
-            _context.Motorcycles.Add(createdMotorcycle);
-            _context.SaveChanges();
-            return(createdMotorcycle);
-        }
-
-    public Motorcycle? GetPut(int Id, Motorcycle createdMotorcycle)
-        {
-            var tempPut = _context.Motorcycles.FirstOrDefault(f => f.Id == Id);
-            if(tempPut == null)
+            var findId = await _context.Motorcycles.FirstOrDefaultAsync(f => f.Id == Id);
+            if(findId == null)
             {
                 return(null);
             }
             else
             {
-                tempPut.Name = createdMotorcycle.Name;
-                tempPut.Stock = createdMotorcycle.Stock;
-                tempPut.Price = createdMotorcycle.Price;
-                _context.SaveChanges();
-                return(tempPut);
+                return(findId);
             }
         }
     
-    public Motorcycle? GetDelete (int Id)
+    public async Task <Motorcycle?> GetPost(Motorcycle receivedesmotorcycles)
         {
-            var deleteTemp = _context.Motorcycles.FirstOrDefault(f => f.Id == Id);
-            
-            if(deleteTemp == null)
+            receivedesmotorcycles.Id = await _context.Motorcycles.CountAsync() + 1;
+            _context.Motorcycles.Add(receivedesmotorcycles);
+            await _context.SaveChangesAsync();
+            return(receivedesmotorcycles);
+        }
+    
+    public async Task <Motorcycle?> GetPut(int Id, Motorcycle UpdatedMotorcycle)
+        {
+            var updatePut = await _context.Motorcycles.FirstOrDefaultAsync(f => f.Id == Id);
+            if(updatePut == null)
             {
                 return(null);
             }
             else
             {
-                _context.Motorcycles.Remove(deleteTemp);
-                _context.SaveChanges();
-                return(deleteTemp);
+                 updatePut.Name = UpdatedMotorcycle.Name;
+                 updatePut.Stock = UpdatedMotorcycle.Stock;
+                 updatePut.Price = UpdatedMotorcycle.Price;
+                 await _context.SaveChangesAsync();
+                 return(updatePut);
+                
+            }
+        }
+
+    public async Task <Motorcycle?> GetDelete(int Id)
+        {
+            var findDelete = await _context.Motorcycles.FirstOrDefaultAsync(f => f.Id == Id);
+            if(findDelete == null)
+            {
+                return (null);
+            }
+            else
+            {
+                _context.Remove(findDelete);
+                await _context.SaveChangesAsync();
+                return(findDelete);
             }
         }
     }

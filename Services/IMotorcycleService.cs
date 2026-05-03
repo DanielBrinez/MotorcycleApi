@@ -4,13 +4,11 @@ namespace MotorcycleApi.Services
 {
     public interface IMotorcycleService
     {
-        List<object> SelectOrders();
-        List<Motorcycle> GetAllPrice();
-        List<Motorcycle> GetAll();
-        List<Motorcycle> GetOrder();
-        Motorcycle? GetById(int Id);
-        Motorcycle? GetPost (Motorcycle createdMotorcycle);
-        Motorcycle? GetPut(int Id, Motorcycle createdMotorcycle);
-        Motorcycle? GetDelete (int Id);
+        Task<List<Motorcycle>> GetAll();
+        Task <Motorcycle?> GetById(int Id);
+        Task <Motorcycle?> GetPost(Motorcycle receivedesmotorcycles);
+        Task <Motorcycle?> GetPut(int Id, Motorcycle UpdatedMotorcycle);
+        Task <Motorcycle?> GetDelete(int Id);
+
     }
 }
