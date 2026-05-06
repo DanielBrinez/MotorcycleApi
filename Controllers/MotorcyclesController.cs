@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MotorcycleApi.Models;
 using MotorcycleApi.Services;
+using MotorcycleApi.DTOs;
 
 namespace MotorcycleApi.Controllers
 {
@@ -92,6 +93,22 @@ namespace MotorcycleApi.Controllers
         {
             var tempTotalMotorcycle = await _services.TotalMotorcycle();
             return Ok(tempTotalMotorcycle);
+        }
+
+    [HttpGet("GetTop3")]
+
+    public async Task<IActionResult> GetTop3MostExpensive()
+        {
+            var tempGetTop3 = await _services.GetTop3MostExpensive();
+            return Ok(tempGetTop3);
+        }
+
+    [HttpPost("CreateMotorcycle")]
+
+    public async Task<IActionResult> CreateMotorcycle (MotorcycleRequestDTO receivedMotorcycle)
+        {
+            var tempCreate = await _services.CreateMotorcycle(receivedMotorcycle);
+            return Created($"/api/motorcycles{tempCreate.Id}", receivedMotorcycle);
         }
     }
 }

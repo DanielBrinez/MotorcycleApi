@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using MotorcycleApi.Data;
 using MotorcycleApi.Models;
 using MotorcycleApi.DTOs;
+using System.Linq;
 
 namespace MotorcycleApi.Services
 {
@@ -85,7 +86,27 @@ namespace MotorcycleApi.Services
             .OrderByDescending(t => t.TotalValue).ToListAsync();
             return(totalMotor);
         }
+    
+    public async Task<List<MotorcycleTopDTO>> GetTop3MostExpensive()
+        {
+            var find3Motorcycle = await _context.Motorcycles.Select(f => new MotorcycleTopDTO{Name = f.Name, Price = f.Price, Stock = f.Stock})
+            .OrderByDescending(f => f.Price)
+            .Take(3).ToListAsync();
+            return(find3Motorcycle);
+        }
+
+    public async Task<Motorcycle> CreateMotorcycle(MotorcycleRequestDTO receivedMotorcycle)
+        {
+            var newMotorcycle = new Motorcycle
+            {
+                Name = receivedMotorcycle.Name,
+                Price = receivedMotorcycle.Price,
+                Stock = receivedMotorcycle.Stock
+            };
+
+                await _context.AddAsync(newMotorcycle);
+                await _context.SaveChangesAsync();
+                return newMotorcycle;   
+        }
     }
-
-
 }

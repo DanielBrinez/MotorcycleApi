@@ -15,6 +15,8 @@ namespace MotorcycleApi.Services
         Task<List<MotorcycleSummaryDTO>> GetCheapMotorcycles ();
         Task<List<MotorcycleDiscountDTO>> DiscountedMotorcyclePrice();
         Task<List<MotorcycleReportDTO>> TotalMotorcycle();
+        Task<List<MotorcycleTopDTO>> GetTop3MostExpensive();
+        Task<Motorcycle> CreateMotorcycle(MotorcycleRequestDTO receivedMotorcycle);
 
     }
 }
