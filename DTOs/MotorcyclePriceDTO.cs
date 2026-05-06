@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace MotorcycleApi.DTOs
 {
-    public class MotorcycleRespondeDTO
+    public class MotorcyclePriceDTO
     {
-        public string Name {get; set;} 
+        public string Name {get; set;} ="";
         public decimal Price {get; set;}
     }
 }

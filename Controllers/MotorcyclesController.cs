@@ -14,14 +14,6 @@ namespace MotorcycleApi.Controllers
         {
             _services = service;
         }
-
-    [HttpGet("available")]
-
-    public async Task <IActionResult> GetAvailableMotorcycless()
-        {
-            var tempAvailable = await _services.GetAvailableMotorcycless();
-            return Ok(tempAvailable);
-        }
     
     [HttpGet("Average")]
 
@@ -60,6 +52,46 @@ namespace MotorcycleApi.Controllers
         {
             var tempGetMost = _services.GetMostExpensive();
             return Ok(tempGetMost);
+        }
+
+    [HttpGet("GetMotorcyclesWithStock")]
+
+    public async Task<IActionResult> GetMotorcyclesWithStock ()
+        {
+            var getTemp = await _services.GetMotorcyclesWithStock();
+            return Ok(getTemp);
+        }
+
+    [HttpGet("GetExpensiveMotorcycles")]
+
+    public async Task<IActionResult> GetExpensiveMotorcycles ()
+        {
+            var getExpensive = await _services.GetExpensiveMotorcycles();
+            return Ok(getExpensive);
+        }
+
+    [HttpGet("GetCheapMotorcycles")]
+
+    public async Task <IActionResult> GetCheapMotorcycles()
+        {
+            var tempGetCheap = await _services.GetCheapMotorcycles();
+            return Ok(tempGetCheap);
+        }
+
+    [HttpGet("DiscountedMotorcyclePrice")]
+
+    public async Task<IActionResult> DiscountedMotorcyclePrice()
+        {
+            var tempDiscount = await _services.DiscountedMotorcyclePrice();
+            return Ok(tempDiscount);
+        }
+
+    [HttpGet("TotalMotorcycle")]
+
+    public async Task<IActionResult> TotalMotorcycle()
+        {
+            var tempTotalMotorcycle = await _services.TotalMotorcycle();
+            return Ok(tempTotalMotorcycle);
         }
     }
 }

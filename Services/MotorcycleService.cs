@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using MotorcycleApi.Data;
 using MotorcycleApi.Models;
+using MotorcycleApi.DTOs;
 
 namespace MotorcycleApi.Services
 {
@@ -13,11 +14,6 @@ namespace MotorcycleApi.Services
             _context = context;
         }
 
-    public async Task<List<MotorcycleResponseDTO>> GetAvailableMotorcycless()
-        {
-            var availableMotorcycles = await _context.Motorcycles.Where(f => f.Stock > 0).Select(f => new MotorcycleResponseDTO{Name = f.Name, Price = f.Price});
-            return (availableMotorcycles);
-        }
 
     public async Task<decimal> GetAveragePrice()
         {
@@ -51,6 +47,45 @@ namespace MotorcycleApi.Services
             var findPrice = await _context.Motorcycles.OrderByDescending(f => f.Stock).FirstOrDefaultAsync();
             return(findPrice);
         }
+    
+    public async Task<List<MotorcycleStockDTO>> GetMotorcyclesWithStock ()
+        {
+            var getMotor = await _context.Motorcycles.Where(g => g.Stock > 0)
+            .Select(g => new MotorcycleStockDTO {Name = g.Name, Stock = g.Stock}).ToListAsync();
+            return(getMotor);
+        }
 
+    public async Task<List<MotorcyclePriceDTO>> GetExpensiveMotorcycles()
+        {
+            var expensiveget = await _context.Motorcycles.Where(e => e.Price >= 20000000)
+            .Select(e => new MotorcyclePriceDTO {Name = e.Name, Price = e.Price}).ToListAsync();
+            return(expensiveget);
+        
+        }
+
+    public async Task<List<MotorcycleSummaryDTO>> GetCheapMotorcycles ()
+        {
+            var getCheap = await _context.Motorcycles.Where(g => g.Price <= 15000000)
+            .Select(g => new MotorcycleSummaryDTO {Name = g.Name, Stock = g.Stock, Price = g.Price})
+            .OrderByDescending(g => g.Price).ToListAsync();
+            return(getCheap);
+        }
+
+    public async Task<List<MotorcycleDiscountDTO>> DiscountedMotorcyclePrice()
+        {
+           var discountMotorcycle = await 
+           _context.Motorcycles.Select(d => new MotorcycleDiscountDTO{Name = d.Name, DiscountedPrice = d.Price * 0.90m}).ToListAsync();
+           return(discountMotorcycle);   
+        }
+
+
+    public async Task<List<MotorcycleReportDTO>> TotalMotorcycle()
+        {
+            var totalMotor = await _context.Motorcycles.Select(t => new MotorcycleReportDTO{Name = t.Name, Price = t.Price, Stock = t.Stock, TotalValue = t.Price * t.Stock})
+            .OrderByDescending(t => t.TotalValue).ToListAsync();
+            return(totalMotor);
+        }
     }
+
+
 }
