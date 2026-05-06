@@ -32,7 +32,7 @@ namespace MotorcycleApi.Controllers
             return Ok(tempTotal);
         }
 
-    [HttpPut("{Id}")]
+    [HttpPut("{Id}/sell")]
 
     public async Task<IActionResult> SellMotorcycle(int Id)
         {
@@ -109,6 +109,36 @@ namespace MotorcycleApi.Controllers
         {
             var tempCreate = await _services.CreateMotorcycle(receivedMotorcycle);
             return Created($"/api/motorcycles{tempCreate.Id}", receivedMotorcycle);
+        }
+
+    [HttpPut("{Id}/update")]
+
+    public async Task<IActionResult> UpdateMotorcycle (int Id, MotorcycleRequestDTO DeleteMotorcycle)
+        {
+            var tempUpdated = await _services.UpdateMotorcycle(Id, DeleteMotorcycle);
+            if(tempUpdated == null)
+            {
+                return NotFound("Producto no encontrado para actualizar");
+            }
+            else
+            {
+                return Ok(tempUpdated);
+            }
+        }
+
+    [HttpDelete("{Id}")]
+
+    public async Task<IActionResult> DeleteMotorcycle(int Id)
+        {
+            var tempDeleteMotorcycle = await _services.DeleteMotorcycle(Id);
+            if(tempDeleteMotorcycle == null)
+            {
+                return NotFound("Producto no encontrado para eliminar");
+            }
+            else
+            {
+                return Ok("Producto eliminado éxitosamente");
+            }
         }
     }
 }

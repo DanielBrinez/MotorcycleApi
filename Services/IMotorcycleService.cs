@@ -17,6 +17,8 @@ namespace MotorcycleApi.Services
         Task<List<MotorcycleReportDTO>> TotalMotorcycle();
         Task<List<MotorcycleTopDTO>> GetTop3MostExpensive();
         Task<Motorcycle> CreateMotorcycle(MotorcycleRequestDTO receivedMotorcycle);
+        Task<Motorcycle> UpdateMotorcycle (int Id, MotorcycleRequestDTO DeleteMotorcycle);
+        Task<Motorcycle> DeleteMotorcycle(int id);
 
     }
 }

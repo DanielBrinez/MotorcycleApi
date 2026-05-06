@@ -86,7 +86,7 @@ namespace MotorcycleApi.Services
             .OrderByDescending(t => t.TotalValue).ToListAsync();
             return(totalMotor);
         }
-    
+
     public async Task<List<MotorcycleTopDTO>> GetTop3MostExpensive()
         {
             var find3Motorcycle = await _context.Motorcycles.Select(f => new MotorcycleTopDTO{Name = f.Name, Price = f.Price, Stock = f.Stock})
@@ -107,6 +107,37 @@ namespace MotorcycleApi.Services
                 await _context.AddAsync(newMotorcycle);
                 await _context.SaveChangesAsync();
                 return newMotorcycle;   
+        }
+    public async Task<Motorcycle> UpdateMotorcycle (int Id, MotorcycleRequestDTO DeleteMotorcycle)
+        {
+            var UpdateData = await _context.Motorcycles.FirstOrDefaultAsync(f => f.Id == Id);
+            if(UpdateData == null)
+            {
+                return (null);
+            }
+            else
+            {
+                UpdateData.Name = DeleteMotorcycle.Name;
+                UpdateData.Price = DeleteMotorcycle.Price;
+                UpdateData.Stock = DeleteMotorcycle.Stock;
+                await _context.SaveChangesAsync();
+                return UpdateData;
+            }
+        }
+
+    public async Task<Motorcycle> DeleteMotorcycle(int Id)
+        {
+            var findDelete = await _context.Motorcycles.FirstOrDefaultAsync(f => f.Id == Id);
+            if(findDelete == null)
+            {
+                return null;
+            }
+            else
+            {
+                _context.Motorcycles.Remove(findDelete);
+                await _context.SaveChangesAsync();
+                return findDelete;
+            }
         }
     }
 }
