@@ -8,6 +8,7 @@ namespace MotorcycleApi.Services
     {
         Task<decimal> GetAveragePrice();
         Task<int> GetTotalStock ();
+        Task<List<Motorcycle>> AllMotors();
         Task<Motorcycle?> SellMotorcycle(int Id);
         Task<Motorcycle?> GetMostExpensive();
         Task<List<MotorcycleStockDTO>> GetMotorcyclesWithStock ();

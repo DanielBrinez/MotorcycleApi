@@ -15,6 +15,12 @@ namespace MotorcycleApi.Services
             _context = context;
         }
 
+    public async Task<List<Motorcycle>> AllMotors()
+        {
+            var allMotorcycles = await _context.Motorcycles.ToListAsync();
+            return allMotorcycles;
+        }
+
 
     public async Task<decimal> GetAveragePrice()
         {

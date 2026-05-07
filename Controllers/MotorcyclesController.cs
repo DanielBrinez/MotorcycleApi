@@ -15,6 +15,14 @@ namespace MotorcycleApi.Controllers
         {
             _services = service;
         }
+
+    [HttpGet]
+
+    public async Task<IActionResult> AllMotors()
+        {
+            var tempAll = await _services.AllMotors();
+            return Ok(tempAll);
+        }    
     
     [HttpGet("Average")]
 
@@ -137,7 +145,7 @@ namespace MotorcycleApi.Controllers
             }
             else
             {
-                return Ok("Producto eliminado éxitosamente");
+                return NoContent();
             }
         }
     }
