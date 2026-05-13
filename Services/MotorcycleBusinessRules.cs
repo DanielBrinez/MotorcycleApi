@@ -6,5 +6,12 @@ namespace MotorcycleApi.Services
         {
             return OriginalPrice * 1.19m;
         }
+
+        public static decimal CalculateDiscount(decimal originalPrice)
+        {
+            return originalPrice * 0.90m;
+        }      
     }
+
+    
 }
