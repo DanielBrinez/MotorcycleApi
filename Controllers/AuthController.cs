@@ -58,7 +58,7 @@ namespace MotorcycleApi.Controllers
             else
             {
                 var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("La_Clave_De_Mi_Api_Es_Muy_Segura_en_Pleno_2026"));
-                var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+                var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);   
 
                 var token = new JwtSecurityToken(
                 expires: DateTime.Now.AddHours(1),

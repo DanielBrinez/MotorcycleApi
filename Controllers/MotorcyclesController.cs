@@ -150,5 +150,55 @@ namespace MotorcycleApi.Controllers
                 return NoContent();
             }
         }
+
+    [Authorize]
+    [HttpGet("CalculateMotorcycle")]
+
+    public async Task<IActionResult> CalculateMotorcycle()
+        {
+            var tempCalculate = await _services.CalculateMotorcycle();
+            return Ok(tempCalculate);
+        }
+    [Authorize]
+    [HttpGet("CalculatePrice")]
+
+    public async Task<IActionResult> CalculatePrice()
+        {
+            var tempCalculatePrice = await _services.CalculatePrice();
+            return Ok(tempCalculatePrice);
+        }
+    [Authorize]
+    [HttpPut("{id}/restock/{quantity}")]
+
+    public async Task<IActionResult> RestockMotorcycle(int Id, int quantity)
+        {
+            var tempRestockMotorcycle = await _services.RestockMotorcycle(Id, quantity);
+            if(tempRestockMotorcycle == null)
+              return null;
+            return Ok(tempRestockMotorcycle);
+        }
+    [Authorize]
+    [HttpGet("GetAllInventory")]
+
+    public async Task<IActionResult> GetAllInventory ()
+        {
+            var tempGetAllInventory = await _services.GetAllInventory();
+            return Ok(tempGetAllInventory);
+        }
+    [Authorize]
+    [HttpPost]
+
+    public async Task<IActionResult> RegisterSale(int Id, SaleRequestDTO saveMotorcycle)
+        {
+            var tempRegister = await _services.RegisterSale(Id, saveMotorcycle);
+            if(tempRegister == null)
+            {
+                return  NotFound();
+            }
+            else
+            {
+                return Ok(tempRegister);
+            }
+        }
     }
 }

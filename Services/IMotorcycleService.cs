@@ -20,6 +20,11 @@ namespace MotorcycleApi.Services
         Task<Motorcycle> CreateMotorcycle(MotorcycleRequestDTO receivedMotorcycle);
         Task<Motorcycle> UpdateMotorcycle (int Id, MotorcycleRequestDTO DeleteMotorcycle);
         Task<Motorcycle> DeleteMotorcycle(int id);
+        Task<List<MotorcycleLowStockDTO>> CalculateMotorcycle();
+        Task<List<MotorcycleTaxDTO>> CalculatePrice();
+        Task<Motorcycle?> RestockMotorcycle(int Id, int quantity);
+        Task<List<InventoryStatusDTO>> GetAllInventory ();
+        Task<Motorcycle?> RegisterSale(int Id, SaleRequestDTO saveMotorcycle);
 
     }
 }

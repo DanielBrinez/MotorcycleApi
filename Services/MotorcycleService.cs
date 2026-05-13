@@ -3,6 +3,7 @@ using MotorcycleApi.Data;
 using MotorcycleApi.Models;
 using MotorcycleApi.DTOs;
 using System.Linq;
+using System.Net.Quic;
 
 namespace MotorcycleApi.Services
 {
@@ -145,5 +146,59 @@ namespace MotorcycleApi.Services
                 return findDelete;
             }
         }
+
+    public async Task<List<MotorcycleLowStockDTO>> CalculateMotorcycle()
+        {
+            var findCalculate = await _context.Motorcycles.Where(f => f.Stock <= 3)
+            .Select(f=> new MotorcycleLowStockDTO{Name =f.Name, Stock = f.Stock, StockStatus = f.Stock == 1 ? "Critico" : "Bajo" }).ToListAsync();
+            return(findCalculate);
+        }
+    public async Task<List<MotorcycleTaxDTO>> CalculatePrice()
+        {
+            var calculateMPrice = await _context.Motorcycles.Select(
+                c => new MotorcycleTaxDTO{Name = c.Name, OriginalPrice = c.Price, PriceWithTax = c.Price * 1.19m}).ToListAsync();
+            return calculateMPrice;
+        }
+    public async Task<Motorcycle?> RestockMotorcycle(int Id, int quantity)
+        {
+            var restockMotorcycle = await _context.Motorcycles.FirstOrDefaultAsync(r => r.Id == Id);
+            if(restockMotorcycle == null)
+            {
+                return null;
+            }
+            else
+            {
+                restockMotorcycle.Stock += quantity;
+                await _context.SaveChangesAsync();
+                return restockMotorcycle;
+            }
+        }
+    public async Task<List<InventoryStatusDTO>> GetAllInventory ()
+        {
+            var findAllInventory = await _context.Motorcycles.Select
+            (f => new InventoryStatusDTO{Name = f.Name, Price = f.Price, Status = f.Price > 30000000 && f.Stock > 5 ? 
+            "Premium disponible" : f.Price > 30000000 && f.Stock <= 5 ? "Premium Agotándose" : f.Price <= 30000000 && f.Stock > 5 ? "Estandar disponible"
+            : "Estándar agotandose"}).ToListAsync();
+            return findAllInventory;
+        }
+    public async Task<Motorcycle?> RegisterSale(int Id, SaleRequestDTO saveMotorcycle)
+        {
+            var findRegister = await _context.Motorcycles.FirstOrDefaultAsync(f => f.Id == Id);
+            if(findRegister == null)
+            {
+                return null;
+            }
+            else if(saveMotorcycle.Quantity > findRegister.Stock)
+            {
+                return null;
+            }
+            else
+            {
+                findRegister.Stock -= saveMotorcycle.Quantity;
+                await _context.SaveChangesAsync();
+                return findRegister;
+            }
+        }
     }
 }
+
