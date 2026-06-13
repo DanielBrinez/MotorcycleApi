@@ -3,7 +3,6 @@ using MotorcycleApi.Data;
 using MotorcycleApi.Models;
 using MotorcycleApi.DTOs;
 using System.Linq;
-using System.Net.Quic;
 
 namespace MotorcycleApi.Services
 {
@@ -199,6 +198,17 @@ namespace MotorcycleApi.Services
                 return findRegister;
             }
         }
+    public async Task<List<CalculateStockDTO>> GetCalculateMotorcycle()
+        {
+            var calculateStockMotorcycle = await _context.Motorcycles.Select
+            (s => new CalculateStockDTO{Name = s.Name, Stock = s.Stock, StockStatus = s.Stock == 0 ? "Agotada" : s.Stock <= 3 ? "Crítico" : s.Stock <= 7 ? "Bajo" : "Disponible"}).ToListAsync();
+            return calculateStockMotorcycle;
+        }
+    
     }
 }
 
+
+//Name = f.Name, Price = f.Price, Status = f.Price > 30000000 && f.Stock > 5 ? 
+    //        "Premium disponible" : f.Price > 30000000 && f.Stock <= 5 ? "Premium Agotándose" : f.Price <= 30000000 && f.Stock > 5 ? "Estandar disponible"
+    //      : "Estándar agotandose"})

@@ -66,8 +66,6 @@ namespace MotorcycleApi.Controllers
 
                 return Ok(new { token = new JwtSecurityTokenHandler().WriteToken(token) });
             }
-
         }
-
     }
 }

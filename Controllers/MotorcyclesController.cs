@@ -61,7 +61,7 @@ namespace MotorcycleApi.Controllers
 
     public async Task<IActionResult> GetMostExpensive()
         {
-            var tempGetMost = _services.GetMostExpensive();
+            var tempGetMost = await _services.GetMostExpensive();
             return Ok(tempGetMost);
         }
     [Authorize]

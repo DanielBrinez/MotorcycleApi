@@ -25,6 +25,7 @@ namespace MotorcycleApi.Services
         Task<Motorcycle?> RestockMotorcycle(int Id, int quantity);
         Task<List<InventoryStatusDTO>> GetAllInventory ();
         Task<Motorcycle?> RegisterSale(int Id, SaleRequestDTO saveMotorcycle);
+        Task<List<CalculateStockDTO>> GetCalculateMotorcycle();
 
     }
 }
